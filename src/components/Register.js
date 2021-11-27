@@ -31,69 +31,71 @@ class Register extends Component {
     return (
       <div>
         <form id="form" className="form registerForm ">
-          <div className="form-control">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="userName"
-              required
-              onChange={(e) => {
-                this.handleChange(e, "username");
-              }}
-            />
-            <i className="fas fa-check-circle"></i>
-            <i className="fas fa-exclamation-circle"></i>
-            <small>Error message</small>
+          <div className="register-container">
+            <div className="form-control">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="userName"
+                required
+                onChange={(e) => {
+                  this.handleChange(e, "username");
+                }}
+              />
+              <i className="fas fa-check-circle"></i>
+              <i className="fas fa-exclamation-circle"></i>
+              <small>Error message</small>
+            </div>
+            <div className="form-control">
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                required
+                onChange={(e) => {
+                  this.handleChange(e, "email");
+                }}
+              />
+              <i className="fas fa-check-circle"></i>
+              <i className="fas fa-exclamation-circle"></i>
+              <small>Error message</small>
+            </div>
+            <div className="form-control">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                onChange={(e) => {
+                  this.handleChange(e, "password");
+                }}
+              />
+              <i className="fas fa-check-circle"></i>
+              <i className="fas fa-exclamation-circle"></i>
+              <small>Error message</small>
+            </div>
+            <div className="form-control">
+              <label htmlFor="passwordcheck">Repeat Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                required
+                onChange={(e) => {
+                  this.handleChange(e, "confirmPassword");
+                }}
+              />
+              <i className="fas fa-check-circle"></i>
+              <i className="fas fa-exclamation-circle"></i>
+              <small>Error message</small>
+            </div>
+            <button className="sub-btn" onClick={this.reg}>
+              Submit
+            </button>
           </div>
-          <div className="form-control">
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              required
-              onChange={(e) => {
-                this.handleChange(e, "email");
-              }}
-            />
-            <i className="fas fa-check-circle"></i>
-            <i className="fas fa-exclamation-circle"></i>
-            <small>Error message</small>
-          </div>
-          <div className="form-control">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              required
-              onChange={(e) => {
-                this.handleChange(e, "password");
-              }}
-            />
-            <i className="fas fa-check-circle"></i>
-            <i className="fas fa-exclamation-circle"></i>
-            <small>Error message</small>
-          </div>
-          <div className="form-control">
-            <label htmlFor="passwordcheck">Repeat Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              required
-              onChange={(e) => {
-                this.handleChange(e, "confirmPassword");
-              }}
-            />
-            <i className="fas fa-check-circle"></i>
-            <i className="fas fa-exclamation-circle"></i>
-            <small>Error message</small>
-          </div>
-          <button className="sub-btn" onClick={this.reg}>
-            Submit
-          </button>
         </form>
       </div>
     );

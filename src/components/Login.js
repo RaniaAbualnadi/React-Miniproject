@@ -66,37 +66,40 @@ class Login extends Component {
           onSubmit={this.handleSubmit}
           action={this.handelToggle()}
         >
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              name="email"
-              value={this.state.email}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-              onChange={this.onHandleEmail}
-              required
-            />
+          <div className="login-container">
+            <div className="form-group">
+              <label htmlFor="exampleInputEmail1">Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                name="email"
+                value={this.state.email}
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+                onChange={this.onHandleEmail}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="exampleInputPassword1">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                name="password"
+                value={this.state.password}
+                id="exampleInputPassword1"
+                placeholder="Password"
+                onChange={this.onHandlePassword}
+                required
+              />
+            </div>
+            <div className="login-btn-container">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              value={this.state.password}
-              id="exampleInputPassword1"
-              placeholder="Password"
-              onChange={this.onHandlePassword}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
         </form>
       </div>
     );
