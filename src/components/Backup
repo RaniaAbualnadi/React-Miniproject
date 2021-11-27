@@ -1,0 +1,594 @@
+Blogs
+import React, { Component } from "react";
+import CommentsPage from "./CommentsPage";
+import "./StylingSheet.css";
+
+// import Comments from "./Comments";
+// import CommentsSection from "./CommentsSection";
+
+export class Blogs extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likeCount: 0,
+    };
+  }
+  likeHandle = (e) => {
+    this.setState({ likeCount: this.state.likeCount + 1 });
+  };
+  render() {
+    return (
+      <div
+        className="containerBlog"
+        style={{ backgroundImage: `url(${this.props.src})` }}
+      >
+        <div className="myBlog">
+          <div className="blog-bottomContainer">
+            <div className="blog-title"> {this.props.title}</div>
+            <div className="blog-date">
+              <div>{this.props.date.toLocaleDateString("en-US")} </div>
+              <div className="like-button-container">
+                <span onClick={this.likeHandle}>
+                  {" "}
+                  <i class="far fa-heart"></i>
+                </span>{" "}
+                {this.state.likeCount}
+              </div>
+            </div>
+          </div>
+          {/* <br />
+          
+          <span>Like: </span> */}
+
+          {/* <div>
+            <CommentsSection />
+          </div> */}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Blogs;
+Blogs end 
+----
+----
+CommentsPage
+import React, { Component } from "react";
+import CommentsSection from "./CommentsSection";
+import Blogs from "./Blogs";
+import { Link } from "react-router-dom";
+
+export default class CommentsPage extends Component {
+  render() {
+    return (
+      <div>
+        <div>
+          <CommentsSection />
+        </div>
+      </div>
+    );
+  }
+}
+-----
+import React, { Component } from "react";
+
+class CommentsSection extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      commentsArr: localStorage.getItem("commentsDataArr")
+        ? JSON.parse(localStorage.getItem("commentsDataArr"))
+        : [],
+    };
+  }
+  addCommentsFunc = (e) => {
+    let commentValue = document.getElementById("commentText").value;
+    document.getElementById("commentText").value = "";
+    let allComments = this.state.commentsArr;
+    allComments.push(commentValue);
+    localStorage.setItem("commentsDataArr", JSON.stringify(allComments));
+    this.setState({
+      commentsArr: allComments,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <div id="comments-container">
+          {localStorage.getItem("commentsDataArr") &&
+            this.state.commentsArr.map((data, index) => {
+              return (
+                <article key={"comments" + index} style={{ color: "red" }}>
+                  {data}
+                </article>
+              );
+            })}
+        </div>
+        <div className="text-box-container">
+          <input id="commentText" type="textarea" name="commentsArr" />
+
+          <button onClick={this.addCommentsFunc}>Add</button>
+        </div>
+      </div>
+    );
+  }
+}
+export default CommentsSection;
+----
+import React, { Component } from "react";
+import Blogs from "./Blogs";
+
+class HomePage extends Component {
+  render() {
+    const blogs = [
+      {
+        id: "e1",
+        title: "Trip1",
+        amount: 94.12,
+        date: new Date(),
+        src: "./images/img1.jpg",
+      },
+      {
+        id: "e2",
+        title: "New TV",
+        amount: 799.49,
+        date: new Date(2021, 2, 12),
+        src: "./images/img2.jpg",
+      },
+      {
+        id: "e3",
+        title: "Car Insurance",
+        amount: 294.67,
+        date: new Date(2021, 2, 28),
+        src: "./images/img3.jpg",
+      },
+      {
+        id: "e4",
+        title: "New Desk (Wooden)",
+        amount: 450,
+        date: new Date(2021, 5, 12),
+        src: "./images/img4.jpg",
+      },
+    ];
+    return (
+      <div className="main-blog-container">
+        {blogs.map((blog) => {
+          return (
+            <Blogs
+              src={blog.src}
+              title={blog.title}
+              amount={blog.amount}
+              date={blog.date}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
+export default HomePage;
+-----
+import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import "./StylingSheet.css";
+import { Link } from "react-router-dom";
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      isAuthenticated: false,
+    };
+  }
+  onHandleEmail = (e) => {
+    // localStorage.setItem("email2", `${this.state.email}`); // in register
+    this.setState({ ...this.state, email: e.target.value });
+  };
+  onHandlePassword = (e) => {
+    this.setState({ ...this.state, password: e.target.value });
+  };
+
+  handleSubmit = () => {
+    // e.preventDefault();
+    let userInputUsername = this.state.email;
+    let userInputPassword = this.state.password;
+    localStorage.setItem("loginState", "false");
+    if (localStorage.getItem(userInputUsername)) {
+      if (localStorage.getItem(userInputUsername) === userInputPassword) {
+        // login
+        localStorage.setItem("loginState", "true");
+        alert("login successfully");
+      } else {
+        alert("wrong password");
+      }
+    } else {
+      alert("please register");
+      return "/Register";
+    }
+    let ourUsersArray = this.state.ourUsers;
+    ourUsersArray.forEach((data) => {
+      if (
+        data.name === userInputUsername &&
+        data.password === userInputPassword
+      ) {
+        this.setState({
+          isAuthenticated: true,
+          // role: data.role,
+        });
+      }
+      // else {
+      //   return "/Register";
+      //   // alert("You Should Register First");
+      // }
+    });
+  };
+  handelToggle = () => {
+    if (localStorage.getItem("loginState" === "false")) {
+      return "/Register";
+    } else return "/";
+  };
+  render() {
+    return (
+      <div>
+        <form
+          className="login-form"
+          onSubmit={this.handleSubmit}
+          action={this.handelToggle()}
+        >
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              value={this.state.email}
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+              onChange={this.onHandleEmail}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              value={this.state.password}
+              id="exampleInputPassword1"
+              placeholder="Password"
+              onChange={this.onHandlePassword}
+              required
+            />
+          </div>
+          <div className="form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="exampleCheck1"
+            />
+            <label className="form-check-label" htmlFor="exampleCheck1">
+              Check me out
+            </label>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default Login;
+-----
+import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import { Link } from "react-router-dom";
+import Register from "./Register";
+import Login from "./Login";
+
+function NavBar() {
+  return (
+    <div>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <a className="navbar-brand" href="#">
+          My Blog
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item active">
+              <Link className="nav-link" to="/">
+                Homepage
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={"/CommentsPage"}>
+                Comments Page
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={"/Login"}>
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={"/Register"}>
+                Register
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  );
+}
+export default NavBar;
+-------
+import React, { Component } from "react";
+import "./StylingSheet.css";
+
+class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
+  }
+  handleChange = (e, attr) => {
+    this.setState({
+      [attr]: e.target.value,
+    });
+  };
+  reg = (e) => {
+    e.preventDefault();
+    console.log(this.state.email + "-" + this.state.password);
+    if (!localStorage.getItem(this.state.email)) {
+      // register
+      localStorage.setItem(this.state.email, this.state.password);
+    } else {
+      alert("You are already registered ");
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <form id="form" className="form registerForm ">
+          <div className="form-control">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="userName"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "username");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <div className="form-control">
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "email");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <div className="form-control">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "password");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <div className="form-control">
+            <label htmlFor="passwordcheck">Repeat Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "confirmPassword");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <button className="sub-btn" onClick={this.reg}>
+            Submit
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
+export default Register;
+-----
+
+import React, { Component } from "react";
+import "./StylingSheet.css";
+import App from "../App";
+
+class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
+  }
+  handleChange = (e, attr) => {
+    this.setState({
+      [attr]: e.target.value,
+    });
+  };
+  reg = (e) => {
+    e.preventDefault();
+    console.log(this.state.email + "-" + this.state.password);
+    if (!localStorage.getItem(this.state.email)) {
+      // register
+      localStorage.setItem(this.state.email, this.state.password);
+    } else {
+      alert("You are already registered ");
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        <form id="form" className="form registerForm ">
+          <div className="form-control">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="userName"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "username");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <div className="form-control">
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "email");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <div className="form-control">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "password");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <div className="form-control">
+            <label htmlFor="passwordcheck">Repeat Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+              onChange={(e) => {
+                this.handleChange(e, "confirmPassword");
+              }}
+            />
+            <i className="fas fa-check-circle"></i>
+            <i className="fas fa-exclamation-circle"></i>
+            <small>Error message</small>
+          </div>
+          <button className="sub-btn" onClick={this.reg}>
+            Submit
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
+export default Register;
+
+---
+App
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./components/HomePage";
+import NavBar from "./components/NavBar";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import CommentsPage from "./components/CommentsPage";
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <NavBar />
+        <div className="sub-App">
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={
+                <div>
+                  <HomePage />
+                </div>
+              }
+            />
+            {/* <Route
+              path="/Blog"
+              element={
+                <div>
+                  <Blogs items={Blogs} />
+                </div>
+              }
+            /> */}
+            <Route path="/CommentsPage" element={<CommentsPage />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Register" element={<Register />} />
+          </Routes>
+        </div>
+      </Router>
+    </div>
+  );
+}
+
+export default App;
